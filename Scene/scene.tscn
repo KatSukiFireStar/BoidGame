@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://n62bc1spkexl"]
+
+[ext_resource type="Script" path="res://Scene/GameManager.gd" id="1_15f6x"]
+[ext_resource type="PackedScene" uid="uid://bfm2b37y3nqfe" path="res://Prefab/sheep_boid.tscn" id="2_xpf3j"]
+
+[node name="Scene" type="Node2D"]
+script = ExtResource("1_15f6x")
+nbBoids = 5
+boidPrefab = ExtResource("2_xpf3j")
