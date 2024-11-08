@@ -13,6 +13,8 @@ var rng : RandomNumberGenerator
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
+	var foreground : TileMapLayer = get_node("Foreground")
 
 	var screenSize = get_tree().root.content_scale_size
 	rng = RandomNumberGenerator.new()
@@ -23,8 +25,13 @@ func _ready() -> void:
 	for i in range(0, nbBoids):
 		var boid : Node2D = boidPrefab.instantiate()
 		
-		var posX : float = rng.randf_range(0, maxX)
-		var posY : float = rng.randf_range(0, maxY) 
+		var posX : float 
+		var posY : float 
+		
+		posX = rng.randf_range(0, maxX)
+		posY = rng.randf_range(0, maxY) 
+		
+		#Check the spawn position and change it if in wall
 		
 		boid.transform.origin = Vector2(posX, posY)
 		
@@ -44,7 +51,7 @@ func _process(delta: float) -> void:
 			if boid == otherBoid:
 				continue
 			var distance = boid.distance(otherBoid)
-			if distance < 800:
+			if distance < 200:
 				closeBoids.append(otherBoid)
 		
 		boid.moveCloser(closeBoids)

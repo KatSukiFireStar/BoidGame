@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://vgjq2x24psyf"]
+
+[ext_resource type="Script" path="res://Script/player.gd" id="1_dl1vr"]
+[ext_resource type="Texture2D" uid="uid://dgln3laygg0wh" path="res://Sprite/dog.png" id="2_cwe38"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mw274"]
+size = Vector2(52, 44)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_dl1vr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_mw274")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_cwe38")

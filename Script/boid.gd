@@ -1,9 +1,7 @@
-extends Node2D
+extends CharacterBody2D
 
 var maxX : int
 var maxY : int
-
-var velocity : Vector2
 
 func move() -> void:
 	if abs(velocity.x) > 10 or abs(velocity.y) > 10:
@@ -12,10 +10,7 @@ func move() -> void:
 		velocity.x *= scaleFactor
 		velocity.y *= scaleFactor
 	
-	if transform.origin.x > 0 and transform.origin.x < maxX:
-		transform.origin.x += velocity.x
-	if transform.origin.y > 0 and transform.origin.y < maxY:
-		transform.origin.y += velocity.y
+	move_and_slide()
 
 func distance(boid: Node2D) -> float:
 	var distX = transform.origin.x - boid.transform.origin.x

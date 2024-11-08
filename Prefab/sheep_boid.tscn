@@ -1,11 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfm2b37y3nqfe"]
+[gd_scene load_steps=4 format=3 uid="uid://bfm2b37y3nqfe"]
 
 [ext_resource type="Script" path="res://Script/boid.gd" id="1_28wd0"]
 [ext_resource type="Texture2D" uid="uid://btfqk54jybgeb" path="res://Sprite/sheep.png" id="1_ilck6"]
 
-[node name="Sheep boid" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2tyvy"]
+size = Vector2(24, 28)
+
+[node name="Sheep boid" type="CharacterBody2D"]
 script = ExtResource("1_28wd0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.0351563, 0.0351563)
 texture = ExtResource("1_ilck6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_2tyvy")
