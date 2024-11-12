@@ -3,12 +3,15 @@ extends CharacterBody2D
 var maxX : int
 var maxY : int
 
+@export
+var speedScale : float = 20
+
 func move() -> void:
 	if abs(velocity.x) > 10 or abs(velocity.y) > 10:
 		var scaleFactor = 10 / max(abs(velocity.x), abs(velocity.y))
 		
-		velocity.x *= scaleFactor
-		velocity.y *= scaleFactor
+		velocity.x *= scaleFactor * speedScale
+		velocity.y *= scaleFactor * speedScale
 	
 	move_and_slide()
 

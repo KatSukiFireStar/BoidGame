@@ -22,22 +22,38 @@ func _ready() -> void:
 	maxX = screenSize.x
 	maxY = screenSize.y
 	
+	var used_cells = foreground.get_used_cells()
+	
 	for i in range(0, nbBoids):
 		var boid : Node2D = boidPrefab.instantiate()
 		
-		var posX : float 
-		var posY : float 
+		var posX : int 
+		var posY : int 
 		
-		posX = rng.randf_range(0, maxX)
-		posY = rng.randf_range(0, maxY) 
-		
-		#Check the spawn position and change it if in wall
-		
-		boid.transform.origin = Vector2(posX, posY)
+		var spawn : bool = false
+		var spawnPos : Vector2i
+		while not spawn:
+			spawn = true
+			
+			posX = rng.randi_range(0, maxX)
+			posY = rng.randi_range(0, maxY) 
+			
+			#Check the spawn position and change it if in wall
+			
+			spawnPos = Vector2i(posX, posY)
+			for cells in used_cells:
+				var newCells = cells * 16
+				if spawnPos.x >= newCells.x && spawnPos.x <= newCells.x + 16 && \
+				 spawnPos.y >= newCells.y && spawnPos.y <= newCells.y + 16:
+					spawn = false
+					
+					
+		boid.transform.origin.x = spawnPos.x
+		boid.transform.origin.y = spawnPos.y
 		
 		boid.maxX = maxX
 		boid.maxY = maxY
-		
+			
 		boids.append(boid)
 		add_child(boid)
 		
