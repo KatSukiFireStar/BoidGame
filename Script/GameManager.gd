@@ -10,11 +10,12 @@ var maxX : float
 var maxY : float
 var boids : Array
 var rng : RandomNumberGenerator
+var foreground : TileMapLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
-	var foreground : TileMapLayer = get_node("Foreground")
+	foreground = get_node("Foreground")
 
 	var screenSize = get_tree().root.content_scale_size
 	rng = RandomNumberGenerator.new()
@@ -62,6 +63,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	for boid in boids:
+		var move : bool = true
 		var closeBoids : Array
 		for otherBoid in boids:
 			if boid == otherBoid:
@@ -70,19 +72,40 @@ func _process(delta: float) -> void:
 			if distance < 200:
 				closeBoids.append(otherBoid)
 		
-		boid.moveCloser(closeBoids)
-		boid.moveWith(closeBoids)
-		boid.moveAway(closeBoids, 20)
+		if boid.transform.origin.x > 0 and boid.transform.origin.x < 17 * 16 \
+		and boid.transform.origin.y > 0 and boid.transform.origin.y < 9 * 16:
+			move = false
 		
-		var border = 25
-		if boid.transform.origin.x < border and boid.velocity.x < 0:
-			boid.velocity.x = - boid.velocity.x * rng.randf()
-		if boid.transform.origin.x > maxX - border and boid.velocity.x > 0:
-			boid.velocity.x = - boid.velocity.x * rng.randf()
-		if boid.transform.origin.y < border and boid.velocity.y < 0:
-			boid.velocity.y = - boid.velocity.y * rng.randf()
-		if boid.transform.origin.y > maxY - border and boid.velocity.y > 0:
-			boid.velocity.y = - boid.velocity.y * rng.randf()
+		if move:
+			boid.moveCloser(closeBoids)
+			boid.moveWith(closeBoids)
+			boid.moveAway(closeBoids, 20)
+			
+			var space_state = get_world_2d().direct_space_state
+			# use global coordinates, not local to node
+			var query = PhysicsRayQueryParameters2D.create(boid.transform.origin, boid.velocity)
+			var result = space_state.intersect_ray(query)
+			
+			
+			#There is a problem with the ray tracing
+			var wall : bool = false
+			for r in result:
+				if r.collider == foreground:
+					wall = true
+					
+			if wall:
+				boid.velocity *= -1
+		
+			var border = 25
+			if boid.transform.origin.x < border and boid.velocity.x < 0:
+				boid.velocity.x = - boid.velocity.x * rng.randf()
+			if boid.transform.origin.x > maxX - border and boid.velocity.x > 0:
+				boid.velocity.x = - boid.velocity.x * rng.randf()
+			if boid.transform.origin.y < border and boid.velocity.y < 0:
+				boid.velocity.y = - boid.velocity.y * rng.randf()
+			if boid.transform.origin.y > maxY - border and boid.velocity.y > 0:
+				boid.velocity.y = - boid.velocity.y * rng.randf()
+		else:
+			boid.velocity = (Vector2(9*16, 16) - boid.transform.origin)
 			
 		boid.move()
-		
