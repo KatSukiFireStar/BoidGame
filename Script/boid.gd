@@ -89,3 +89,19 @@ func moveAway(boids: Array, minDist : float) -> void:
 				return
 				
 			velocity = Vector2(velocity.x - distX / 5, velocity.y - distY / 5)
+			
+func orientedMove(player : Node2D, minDist : float) -> void :
+	var xDiff = (transform.origin.x - player.transform.origin.x)
+	var yDiff = (transform.origin.y - player.transform.origin.y)
+	
+	if xDiff >= 0:
+		xDiff = sqrt(minDist) - xDiff
+	elif xDiff < 0:
+		xDiff = -sqrt(minDist) - xDiff
+				
+	if yDiff >= 0:
+		yDiff = sqrt(minDist) - yDiff
+	elif yDiff < 0:
+		yDiff = -sqrt(minDist) - yDiff
+		
+		#ToDo: finir le deplacement orienté
