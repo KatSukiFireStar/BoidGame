@@ -16,6 +16,8 @@ var rng : RandomNumberGenerator
 var foreground : TileMapLayer
 var player : Node2D
 
+var indToRemove : Array
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
@@ -44,8 +46,6 @@ func _ready() -> void:
 			posX = rng.randi_range(0, maxX)
 			posY = rng.randi_range(0, maxY) 
 			
-			#Check the spawn position and change it if in wall
-			
 			spawnPos = Vector2i(posX, posY)
 			for cells in used_cells:
 				var newCells = cells * 16
@@ -71,7 +71,12 @@ func distance(player: Node2D, boid: Node2D) -> float:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	for boid in boids:
+	for i in indToRemove:
+		boids.remove_at(i)
+	
+	indToRemove = []
+	for i in range(0, len(boids)):
+		var boid = boids[i]
 		var move : bool = true
 		var closeBoids : Array
 		for otherBoid in boids:
@@ -91,7 +96,7 @@ func _process(delta: float) -> void:
 			boid.moveAway(closeBoids, 50)
 			
 			if distance(player, boid) < distDog:
-				pass
+				boid.orientedMove(player, distDog)
 			
 			var space_state = get_world_2d().direct_space_state
 			# use global coordinates, not local to node
@@ -117,5 +122,9 @@ func _process(delta: float) -> void:
 				boid.velocity.y = - boid.velocity.y * rng.randf()
 		else:
 			boid.velocity = (Vector2(9*16, 16) - boid.transform.origin)
+			
+			if boid.transform.origin.x >= (8*16) and boid.transform.origin.x <= (10*16) and boid.transform.origin.y <= 60:
+				indToRemove.append(i)
+				boid.destroy()
 			
 		boid.move()

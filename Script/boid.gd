@@ -4,7 +4,7 @@ var maxX : int
 var maxY : int
 
 @export
-var speedScale : float = 20
+var speedScale : float = 10
 
 func move() -> void:
 	if abs(velocity.x) > 10 or abs(velocity.y) > 10:
@@ -103,5 +103,10 @@ func orientedMove(player : Node2D, minDist : float) -> void :
 		yDiff = sqrt(minDist) - yDiff
 	elif yDiff < 0:
 		yDiff = -sqrt(minDist) - yDiff
-		
-		#ToDo: finir le deplacement orienté
+	
+	velocity = Vector2(velocity.x - xDiff * 2, velocity.y - yDiff * 2)
+	
+
+
+func destroy() -> void:
+	queue_free()
