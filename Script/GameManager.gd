@@ -16,6 +16,8 @@ var rng : RandomNumberGenerator
 var foreground : TileMapLayer
 var player : Node2D
 
+var label : Label
+
 var indToRemove : Array
 
 # Called when the node enters the scene tree for the first time.
@@ -23,6 +25,8 @@ func _ready() -> void:
 	
 	foreground = get_node("Foreground")
 	player = get_node("Player")
+	label = get_node("CanvasLayer/Label")
+	label.visible = false
 
 	var screenSize = get_tree().root.content_scale_size
 	rng = RandomNumberGenerator.new()
@@ -73,6 +77,11 @@ func distance(player: Node2D, boid: Node2D) -> float:
 func _process(delta: float) -> void:
 	for i in indToRemove:
 		boids.remove_at(i)
+	
+	if len(boids) == 0:
+		label.visible = true
+		player.end = true
+		return
 	
 	indToRemove = []
 	for i in range(0, len(boids)):

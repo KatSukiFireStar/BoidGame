@@ -6,13 +6,19 @@ var vitesse: int = 100
 var maxX : float
 var maxY : float
 
+var end : bool
+
 func _ready() -> void:
 	var screenSize = get_tree().root.content_scale_size
 	maxX = screenSize.x
 	maxY = screenSize.y
+	end = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if end:
+		return
+	
 	velocity = Input.get_vector("left", "right", "up", "down") * vitesse
 		
 	if transform.origin.x <= 0 and velocity.x < 0:

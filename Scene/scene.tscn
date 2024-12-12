@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=4 uid="uid://n62bc1spkexl"]
+[gd_scene load_steps=6 format=4 uid="uid://n62bc1spkexl"]
 
 [ext_resource type="Script" path="res://Script/GameManager.gd" id="1_15f6x"]
 [ext_resource type="PackedScene" uid="uid://bfm2b37y3nqfe" path="res://Prefab/sheep_boid.tscn" id="2_xpf3j"]
 [ext_resource type="TileSet" uid="uid://u8mrotmkikrc" path="res://tileset.tres" id="3_dkgnq"]
 [ext_resource type="PackedScene" uid="uid://vgjq2x24psyf" path="res://Prefab/player.tscn" id="4_a4ddk"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_q3box"]
+font_size = 100
+outline_size = 30
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Scene" type="Node2D"]
 script = ExtResource("1_15f6x")
@@ -26,3 +31,13 @@ tile_set = ExtResource("3_dkgnq")
 [node name="Player" parent="." instance=ExtResource("4_a4ddk")]
 position = Vector2(500, 300)
 vitesse = 500
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 498.0
+offset_top = 461.0
+offset_right = 1346.0
+offset_bottom = 598.0
+text = "Vous avez gagné !"
+label_settings = SubResource("LabelSettings_q3box")
